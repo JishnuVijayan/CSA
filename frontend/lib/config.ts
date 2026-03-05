@@ -6,3 +6,6 @@ export const API_ENDPOINTS = {
   applicationStatus: (refNumber: string) => `${API_URL}/applications/status/${refNumber}`,
   updateStatus: (refNumber: string) => `${API_URL}/applications/status/${refNumber}`,
 };
+
+// Helper function to get API URL
+export const getApiUrl = () => API_URL;

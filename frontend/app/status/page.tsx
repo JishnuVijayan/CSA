@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import { Search, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react';
+import { API_ENDPOINTS } from '@/lib/config';
 
 const inputClassName = "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900";
 
@@ -20,7 +21,7 @@ export default function StatusCheckPage() {
     setApplication(null);
 
     try {
-      const response = await fetch(`http://localhost:3001/applications/status/${referenceNumber}`);
+      const response = await fetch(API_ENDPOINTS.applicationStatus(referenceNumber));
       const data = await response.json();
 
       if (response.ok) {

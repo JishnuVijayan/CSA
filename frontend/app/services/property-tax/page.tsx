@@ -8,6 +8,7 @@ import SessionTimer from '@/components/SessionTimer';
 import SessionExpiredOverlay from '@/components/SessionExpiredOverlay';
 import ErrorSummary from '@/components/ErrorSummary';
 import { Shield, CheckCircle, XCircle, Square, CheckSquare } from 'lucide-react';
+import { API_ENDPOINTS } from '@/lib/config';
 
 const inputClassName = "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900";
 
@@ -178,7 +179,7 @@ export default function PropertyTaxPage() {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:3001/applications', {
+      const response = await fetch(API_ENDPOINTS.applications, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

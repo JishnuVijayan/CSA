@@ -10,6 +10,7 @@ import CaptchaChallenge from '@/components/CaptchaChallenge';
 import ErrorSummary from '@/components/ErrorSummary';
 import { formSchema } from '@/lib/validation';
 import { US_STATES } from '@/lib/types';
+import { API_ENDPOINTS } from '@/lib/config';
 
 const inputClassName = "w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900";
 
@@ -59,7 +60,7 @@ export default function LicenseRenewalPage() {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:3001/applications', {
+      const response = await fetch(API_ENDPOINTS.applications, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
