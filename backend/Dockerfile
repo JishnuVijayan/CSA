@@ -7,8 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install dependencies
-RUN npm ci
+# Install dependencies (use npm install instead of ci to handle lock file issues)
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -29,7 +29,7 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 # Install production dependencies only
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 # Copy Prisma Client from builder
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
