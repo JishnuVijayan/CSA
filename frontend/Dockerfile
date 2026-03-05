@@ -6,33 +6,31 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (use npm install instead of ci to handle lock file issues)
+# Install all dependencies
 RUN npm install
 
 # Copy source code
 COPY . .
 
-# Build the Next.js application
+# Build the Next.js application (standalone output, no Turbopack)
 RUN npm run build
 
-# Production stage
+# Production stage - use standalone output (no separate npm install needed)
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-
-# Install production dependencies only
-RUN npm install --omit=dev
-
-# Copy built application
-COPY --from=builder /app/.next ./.next
+# Copy standalone server bundle
+COPY --from=builder /app/.next/standalone ./
+# Copy static assets
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./next.config.ts
 
 # Expose port
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "start"]
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+# Start the application using the standalone server
+CMD ["node", "server.js"]
