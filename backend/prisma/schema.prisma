@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Application {
+  id              String   @id @default(uuid())
+  referenceNumber String   @unique
+  serviceType     String   // license-renewal, aadhar-update, passport, voter-id, property-tax
+  status          String   @default("PENDING") // PENDING, UNDER_REVIEW, APPROVED, REJECTED
+  formData        Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([referenceNumber])
+  @@index([serviceType])
+  @@index([status])
+}

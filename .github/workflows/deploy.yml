@@ -1,0 +1,38 @@
+# GitHub Actions Workflow for Automated Deployment
+# This is optional - only use if you want automatic deployments on push
+
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Deploy to Lightsail
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.LIGHTSAIL_HOST }}
+        username: ubuntu
+        key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+        script: |
+          cd ~/state-portal-prototype
+          git pull origin main
+          docker-compose down
+          docker-compose up -d --build
+          echo "Deployment complete!"
+
+# To use this workflow:
+# 1. Go to your GitHub repository settings
+# 2. Navigate to Secrets and Variables > Actions
+# 3. Add the following secrets:
+#    - LIGHTSAIL_HOST: Your Lightsail instance IP address
+#    - LIGHTSAIL_SSH_KEY: Your private SSH key content
+# 4. Push to main branch to trigger deployment
